@@ -8,7 +8,7 @@ export const isResolutionValid = (
   resolutionWidth: number = 0,
   resolutionHeight: number = 1
 ): boolean => {
-  if (!resolutionWidth || !resolutionHeight || !image.width || !image.height)
+  if (!resolutionWidth || (!resolutionHeight && resolutionType !== 'absoluteWidth') || !image.width || !image.height)
     return true;
   switch (resolutionType) {
     case 'absolute': {
@@ -29,6 +29,12 @@ export const isResolutionValid = (
     case 'more': {
       if (image.width >= resolutionWidth && image.height >= resolutionHeight)
         return true;
+      break;
+    }
+    case 'absoluteWidth': {
+      if (image.width === resolutionWidth)
+        if (!resolutionHeight || image.height >= resolutionHeight)
+          return true;
       break;
     }
     default:
